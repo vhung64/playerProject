@@ -32,6 +32,5 @@ public class PlayerService {
         list = list.subList(0, Math.min(list.size(), 15));
         List<PlayerInfoDto> dtoList = list.stream().map(PlayerInfoMapper::toPlayerInfoDto).collect(Collectors.toList());
         return dtoList;
-
     }
 }

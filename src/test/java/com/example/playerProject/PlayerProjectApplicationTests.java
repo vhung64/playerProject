@@ -2,12 +2,15 @@ package com.example.playerProject;
 
 import com.example.playerProject.entity.Category;
 import com.example.playerProject.entity.Player;
+import com.example.playerProject.entity.User;
 import com.example.playerProject.repository.CategoryRepository;
 import com.example.playerProject.repository.PlayerRepository;
+import com.example.playerProject.repository.UserRepository;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.*;
 
@@ -19,7 +22,13 @@ class PlayerProjectApplicationTests {
 	private PlayerRepository playerRepository;
 
 	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
 	private Faker faker;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Test
 	void load_Category() {
@@ -56,15 +65,24 @@ class PlayerProjectApplicationTests {
 					.name(faker.name().fullName())
 					.url(faker.name().lastName().toLowerCase())
 					.email(faker.internet().emailAddress())
-					.avatar(faker.internet().avatar())
+					.avatar("https://playerduo.com/api/upload-service/images/ded74223-1ab2-45b9-a3c6-9d40ac73a63e__7881af80-9ab0-11ed-a19f-23a3b10d190e__player_avatar.jpg")
 					.introduce(faker.address().fullAddress())
 					.playerPrice(50000)
 					.status(true)
 					.categories(rdCategories)
-					.rate(4.0)
+					.rate(4.5)
 					.build();
 			playerRepository.save(player);
 		}
+	}
+	@Test
+	void create_Acc(){
+		User user = User.builder()
+				.email("hdchjpn01@gmail.com")
+				.password(passwordEncoder.encode("111"))
+				.role("USER")
+				.build();
+		userRepository.save(user);
 	}
 
 }

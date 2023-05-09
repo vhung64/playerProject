@@ -16,7 +16,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Player implements UserDetails {
+public class Player{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -31,16 +31,13 @@ public class Player implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password")
-    private String password;
-
     @Column(name = "avatar")
     private String avatar;
 
     @Column(name = "album")
     private String album;
 
-    @Column(name = "introduce")
+    @Column(name = "introduce", length = 500)
     private String introduce;
 
     @Column(name = "player-price")
@@ -52,24 +49,27 @@ public class Player implements UserDetails {
     @Column(name = "status")
     private Boolean status;
 
+    @Column(name = "isPlayerDuo")
+    private Boolean isPlayerDuo;
+
     @Column(name = "notification")
     private String notification;
 
     // so tien da nap
     @Column(name = "payment")
-    private String payment;
+    private Integer payment;
 
     // so du
     @Column(name = "credit")
-    private String credit;
+    private Integer credit;
 
     // so tien da donate
     @Column(name = "amount_donate")
-    private String amountDonate;
+    private Integer amountDonate;
 
     // so tien da duoc donate
     @Column(name = "donation_amount")
-    private String donationAmount;
+    private Integer donationAmount;
 
     // so gio thue
     @Column(name = "hours_rented")
@@ -85,54 +85,24 @@ public class Player implements UserDetails {
     @Column(name = "link_facebook")
     private String linkFacebook;
 
-    @Column(name = "role")
-    private String role;
-
     @ManyToMany
     @JoinTable(name = "player_categories",
             joinColumns = @JoinColumn(name = "player_id"),
             inverseJoinColumns = @JoinColumn(name = "categories_id"))
     private Set<Category> categories = new LinkedHashSet<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority("ROLE_" + this.role));
-        return roles;
-    }
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.url;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @PostPersist
-    public void postPersist() {
+    @PrePersist
+    public void prePersist() {
         createdAt = LocalDateTime.now();
+        hoursRented = 0;
+        hoursWorked = 0;
+        payment = 0;
+        credit = 0;
+        amountDonate = 0;
+        donationAmount = 0;
     }
 }

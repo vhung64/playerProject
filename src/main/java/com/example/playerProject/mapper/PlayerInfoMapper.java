@@ -16,6 +16,7 @@ public class PlayerInfoMapper {
                 player.getRate(),
                 player.getStatus(),
                 player.getDonationAmount(),
+                player.getHoursWorked(),
                 player.getCreatedAt(),
                 player.getLinkFacebook(),
                 player.getCategories()

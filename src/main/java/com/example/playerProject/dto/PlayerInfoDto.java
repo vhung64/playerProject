@@ -21,7 +21,8 @@ public class PlayerInfoDto {
     private Integer playerPrice;
     private Double rate;
     private Boolean status;
-    private String donationAmount;
+    private Integer donationAmount;
+    private Integer hoursWorked;
     private LocalDateTime createdAt;
     private String linkFacebook;
     private Set<Category> categories = new LinkedHashSet<>();
